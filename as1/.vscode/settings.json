@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "errno.h": "c",
+        "ioctl.h": "c",
+        "fcntl.h": "c",
+        "spi.h": "c",
+        "stdlib.h": "c",
+        "stdio.h": "c",
+        "stdbool.h": "c",
+        "time.h": "c",
+        "stdint.h": "c"
+    }
+}
