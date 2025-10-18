@@ -15,5 +15,6 @@
         "string.h": "c",
         "joystick.h": "c",
         "assert.h": "c"
-    }
+    },
+    "cmake.sourceDirectory": "/home/kirin/ensc351/work/as1/cmake_starter"
 }

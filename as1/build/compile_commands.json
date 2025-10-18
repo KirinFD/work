@@ -1,0 +1,37 @@
+[
+{
+  "directory": "/home/kirin/ensc351/work/as1/build/hal",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc  -I/home/kirin/ensc351/work/as1/cmake_starter/hal/hal/include -I/home/kirin/ensc351/work/as1/cmake_starter/hal/include -g -Wall -Werror -Wpedantic -Wextra -fdiagnostics-color -fsanitize=address -pthread -std=gnu11 -o CMakeFiles/hal.dir/src/button.c.o -c /home/kirin/ensc351/work/as1/cmake_starter/hal/src/button.c",
+  "file": "/home/kirin/ensc351/work/as1/cmake_starter/hal/src/button.c"
+},
+{
+  "directory": "/home/kirin/ensc351/work/as1/build/hal",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc  -I/home/kirin/ensc351/work/as1/cmake_starter/hal/hal/include -I/home/kirin/ensc351/work/as1/cmake_starter/hal/include -g -Wall -Werror -Wpedantic -Wextra -fdiagnostics-color -fsanitize=address -pthread -std=gnu11 -o CMakeFiles/hal.dir/src/joystick.c.o -c /home/kirin/ensc351/work/as1/cmake_starter/hal/src/joystick.c",
+  "file": "/home/kirin/ensc351/work/as1/cmake_starter/hal/src/joystick.c"
+},
+{
+  "directory": "/home/kirin/ensc351/work/as1/build/hal",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc  -I/home/kirin/ensc351/work/as1/cmake_starter/hal/hal/include -I/home/kirin/ensc351/work/as1/cmake_starter/hal/include -g -Wall -Werror -Wpedantic -Wextra -fdiagnostics-color -fsanitize=address -pthread -std=gnu11 -o CMakeFiles/hal.dir/src/led.c.o -c /home/kirin/ensc351/work/as1/cmake_starter/hal/src/led.c",
+  "file": "/home/kirin/ensc351/work/as1/cmake_starter/hal/src/led.c"
+},
+{
+  "directory": "/home/kirin/ensc351/work/as1/build/hal",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc  -I/home/kirin/ensc351/work/as1/cmake_starter/hal/hal/include -I/home/kirin/ensc351/work/as1/cmake_starter/hal/include -g -Wall -Werror -Wpedantic -Wextra -fdiagnostics-color -fsanitize=address -pthread -std=gnu11 -o CMakeFiles/hal.dir/src/mcp3208.c.o -c /home/kirin/ensc351/work/as1/cmake_starter/hal/src/mcp3208.c",
+  "file": "/home/kirin/ensc351/work/as1/cmake_starter/hal/src/mcp3208.c"
+},
+{
+  "directory": "/home/kirin/ensc351/work/as1/build/hal",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc  -I/home/kirin/ensc351/work/as1/cmake_starter/hal/hal/include -I/home/kirin/ensc351/work/as1/cmake_starter/hal/include -g -Wall -Werror -Wpedantic -Wextra -fdiagnostics-color -fsanitize=address -pthread -std=gnu11 -o CMakeFiles/hal.dir/src/spi.c.o -c /home/kirin/ensc351/work/as1/cmake_starter/hal/src/spi.c",
+  "file": "/home/kirin/ensc351/work/as1/cmake_starter/hal/src/spi.c"
+},
+{
+  "directory": "/home/kirin/ensc351/work/as1/build/app",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc  -I/home/kirin/ensc351/work/as1/cmake_starter/app/include -I/home/kirin/ensc351/work/as1/cmake_starter/hal/include -g -Wall -Werror -Wpedantic -Wextra -fdiagnostics-color -fsanitize=address -pthread -std=gnu11 -o CMakeFiles/as1.dir/src/badmath.c.o -c /home/kirin/ensc351/work/as1/cmake_starter/app/src/badmath.c",
+  "file": "/home/kirin/ensc351/work/as1/cmake_starter/app/src/badmath.c"
+},
+{
+  "directory": "/home/kirin/ensc351/work/as1/build/app",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc  -I/home/kirin/ensc351/work/as1/cmake_starter/app/include -I/home/kirin/ensc351/work/as1/cmake_starter/hal/include -g -Wall -Werror -Wpedantic -Wextra -fdiagnostics-color -fsanitize=address -pthread -std=gnu11 -o CMakeFiles/as1.dir/src/reaction_timer.c.o -c /home/kirin/ensc351/work/as1/cmake_starter/app/src/reaction_timer.c",
+  "file": "/home/kirin/ensc351/work/as1/cmake_starter/app/src/reaction_timer.c"
+}
+]

@@ -1,28 +1,18 @@
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <string.h>
-#include <strings.h>
 #include <time.h>
 #include <unistd.h>
-#include <fcntl.h>
-#include <errno.h>
 #include <signal.h>
-#include <sys/select.h>
-#include <sys/ioctl.h>
-#include <linux/spi/spidev.h>
+#include <string.h>
 
 #include "hal/led.h"
+#include "hal/mcp3208.h"
 #include "hal/joystick.h"
 #include "hal/spi.h"
-#include "hal/mcp3208.h"
 
 static volatile int keep_running = 1;
 static void sigint_handler(int s) { (void)s; keep_running = 0; }
-
-/* ---------------- Utility time helpers ---------------- */
 
 static double now_seconds(void) {
     struct timespec ts;
@@ -36,8 +26,9 @@ static long elapsed_ms(double start, double end) {
 int main()
 {
     signal(SIGINT, sigint_handler);
+
     const char *spi_dev = "/dev/spidev0.0";
-    uint32_t spi_speed = 1000000U;
+    unsigned int spi_speed = 1000000U;
     int xchan = 0, ychan = 1;
 
     const char *g_trigger = "/sys/class/leds/ACT/trigger";
@@ -47,12 +38,27 @@ int main()
 
     srand((unsigned)time(NULL));
 
+    /* Initialize LED HAL */
     LED led;
-    Joystick joy;
     led_init(&led, g_trigger, g_bright, r_trigger, r_bright);
 
-    if (joystick_init(&joy, spi_dev, spi_speed, xchan, ychan) != 0) {
-        fprintf(stderr, "Failed to initialize joystick (SPI).\n");
+    /* Initialize MCP3208 ADC handle */
+    MCP3208 adc;
+    int mcp_ok = 0;
+    if (mcp3208_init(&adc, spi_dev, (uint32_t)spi_speed) == 0) {
+        mcp_ok = 1;
+    } else {
+        fprintf(stderr, "Error: MCP3208 init failed.\n");
+        return 0;
+    }
+
+    /* Create joystick instance (pass &adc if hardware ok, otherwise NULL) */
+    Joystick *joy = NULL;
+    if (joystick_init(&joy, mcp_ok ? &adc : NULL, xchan, ychan, 600) != 0) {
+        fprintf(stderr, "Error: joystick_init failed\n");
+        if (mcp_ok) mcp3208_close(&adc);
+        led_cleanup(&led);
+        return 1;
     }
 
     printf("Hello embedded world, from Colby!\n\n");
@@ -64,7 +70,7 @@ int main()
         round_number++;
         printf("=== Round %d ===\n", round_number);
 
-        /* Step 1: get ready + flash LEDs 4 times (green then red) */
+        /* Step 1: get ready + flash LEDs 4 times */
         printf("Get ready...\n");
         for (int i = 0; i < 4; ++i) {
             led_green_on(&led);
@@ -76,13 +82,13 @@ int main()
         }
 
         /* Step 2: if joystick pressing up or down, ask user to let go and wait until released */
-        JOY_STATE state = joystick_get_state(&joy);
+        JOY_STATE state = joystick_get_state(joy);
         if (state == JSTATE_UP || state == JSTATE_DOWN) {
             printf("Please let go of joystick\n");
             fflush(stdout);
             while (keep_running) {
                 usleep(50000);
-                state = joystick_get_state(&joy);
+                state = joystick_get_state(joy);
                 if (!(state == JSTATE_UP || state == JSTATE_DOWN)) break;
             }
         }
@@ -92,7 +98,7 @@ int main()
         usleep((useconds_t)(delay * 1e6));
 
         /* Step 4: If after the delay the user is pressing up/down, too soon */
-        state = joystick_get_state(&joy);
+        state = joystick_get_state(joy);
         if (state == JSTATE_UP || state == JSTATE_DOWN) {
             printf("too soon\n\n");
             led_green_off(&led);
@@ -117,7 +123,7 @@ int main()
         double start = now_seconds();
         JOY_STATE pressed = JSTATE_NONE;
         while (keep_running) {
-            state = joystick_get_state(&joy);
+            state = joystick_get_state(joy);
             if (state != JSTATE_NONE) {
                 pressed = state;
                 break;
@@ -127,7 +133,8 @@ int main()
                 printf("No response within 5 seconds. Exiting.\n");
                 led_green_off(&led);
                 led_red_off(&led);
-                joystick_cleanup(&joy);
+                joystick_cleanup(joy);
+                if (mcp_ok) mcp3208_close(&adc);
                 led_cleanup(&led);
                 return 0;
             }
@@ -167,7 +174,8 @@ int main()
         usleep(500000);
     }
 
-    joystick_cleanup(&joy);
+    joystick_cleanup(joy);
+    if (mcp_ok) mcp3208_close(&adc);
     led_cleanup(&led);
     printf("Exiting.\n");
     return 0;
