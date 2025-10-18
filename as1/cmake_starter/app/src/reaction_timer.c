@@ -14,10 +14,10 @@
 #include <sys/ioctl.h>
 #include <linux/spi/spidev.h>
 
-#include "led.c"
-#include "joystick.c"
-#include "spi.c"
-#include "mcp3208.c"
+#include "hal/led.h"
+#include "hal/joystick.h"
+#include "hal/spi.h"
+#include "hal/mcp3208.h"
 
 static volatile int keep_running = 1;
 static void sigint_handler(int s) { (void)s; keep_running = 0; }
