@@ -8,6 +8,12 @@
         "stdio.h": "c",
         "stdbool.h": "c",
         "time.h": "c",
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "strings.h": "c",
+        "unistd.h": "c",
+        "select.h": "c",
+        "string.h": "c",
+        "joystick.h": "c",
+        "assert.h": "c"
     }
 }

@@ -1,64 +1,56 @@
-#include "joystick.h"
-#include "spi.h"
-#include <stdio.h>
+#include "hal/joystick.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/select.h>
 
-static int mcp3208_read_channel(int spi_fd, int channel, uint32_t speed_hz, int *out_value)
-{
-    if (channel < 0 || channel > 7) return -1;
-    uint8_t tx[3], rx[3];
-    memset(tx, 0, sizeof(tx));
-    memset(rx, 0, sizeof(rx));
-    tx[0] = 0x06 | ((channel & 0x04) >> 2);
-    tx[1] = (uint8_t)((channel & 0x03) << 6);
-    tx[2] = 0x00;
-    if (spi_transfer(spi_fd, tx, rx, 3, speed_hz) != 0) {
-        return -1;
-    }
-    int value = ((rx[1] & 0x0F) << 8) | rx[2];
-    *out_value = value;
-    return 0;
-}
+struct Joystick {
+    MCP3208 *adc;           /* may be NULL -> simulation */
+    int x_channel;
+    int y_channel;
+    int threshold;
+    int center_x;
+    int center_y;
+    int calibrated;
+};
 
-int joystick_init(Joystick *j, const char *spidev_path, uint32_t spi_speed_hz,
-                  int x_channel, int y_channel, int threshold)
+int joystick_init(Joystick **j_out, MCP3208 *adc, int x_channel, int y_channel, int threshold)
 {
+    if (!j_out) return -1;
+    Joystick *j = (Joystick *)calloc(1, sizeof(Joystick));
     if (!j) return -1;
-    memset(j, 0, sizeof(*j));
-    if (!spidev_path) spidev_path = "/dev/spidev0.0";
-    strncpy(j->spidev_path, spidev_path, sizeof(j->spidev_path) - 1);
-    j->spi_speed_hz = spi_speed_hz > 0 ? spi_speed_hz : 1000000;
+    j->adc = adc;
     j->x_channel = x_channel;
     j->y_channel = y_channel;
-    j->threshold = threshold > 0 ? threshold : 600; /* default threshold */
+    j->threshold = threshold > 0 ? threshold : 600;
+    j->center_x = 0;
+    j->center_y = 0;
+    j->calibrated = 0;
 
-    j->spi_fd = spi_open_device(j->spidev_path, 0, (uint32_t)j->spi_speed_hz);
-    if (j->spi_fd < 0) {
-        fprintf(stderr, "joystick_init: failed to open spidev %s\n", j->spidev_path);
-        return -1;
+    if (adc && adc->fd >= 0) {
+        /* Calibrate center by sampling */
+        const int samples = 64;
+        long sumx = 0, sumy = 0;
+        for (int i = 0; i < samples; ++i) {
+            int vx = 0, vy = 0;
+            if (mcp3208_read_channel(adc, j->x_channel, &vx) != 0) vx = 0;
+            if (mcp3208_read_channel(adc, j->y_channel, &vy) != 0) vy = 0;
+            sumx += vx;
+            sumy += vy;
+            usleep(5000);
+        }
+        j->center_x = (int)(sumx / samples);
+        j->center_y = (int)(sumy / samples);
+        j->calibrated = 1;
+        fprintf(stderr, "joystick_init: calibrated center_x=%d center_y=%d threshold=%d\n",
+                j->center_x, j->center_y, j->threshold);
+    } else {
+        /* Simulation mode: mark calibrated so joystick_get_state() will use keyboard */
+        j->calibrated = 1;
     }
 
-    /* Calibrate center by averaging several samples */
-    const int samples = 64;
-    long sumx = 0, sumy = 0;
-    for (int i = 0; i < samples; ++i) {
-        int vx = 0, vy = 0;
-        if (mcp3208_read_channel(j->spi_fd, j->x_channel, j->spi_speed_hz, &vx) != 0) vx = 0;
-        if (mcp3208_read_channel(j->spi_fd, j->y_channel, j->spi_speed_hz, &vy) != 0) vy = 0;
-        sumx += vx;
-        sumy += vy;
-        usleep(5000); /* 5ms between samples */
-    }
-    j->center_x = (int)(sumx / samples);
-    j->center_y = (int)(sumy / samples);
-    j->calibrated = 1;
-
-    fprintf(stderr, "Joystick HAL: spi=%s speed=%u chX=%d chY=%d centerX=%d centerY=%d threshold=%d\n",
-            j->spidev_path, (unsigned)j->spi_speed_hz, j->x_channel, j->y_channel,
-            j->center_x, j->center_y, j->threshold);
-
+    *j_out = j;
     return 0;
 }
 
@@ -66,18 +58,14 @@ JOY_STATE joystick_get_state(Joystick *j)
 {
     if (!j || !j->calibrated) return JSTATE_NONE;
     int vx = 0, vy = 0;
-    if (mcp3208_read_channel(j->spi_fd, j->x_channel, j->spi_speed_hz, &vx) != 0) return JSTATE_NONE;
-    if (mcp3208_read_channel(j->spi_fd, j->y_channel, j->spi_speed_hz, &vy) != 0) return JSTATE_NONE;
-
+    if (mcp3208_read_channel(j->adc, j->x_channel, &vx) != 0) return JSTATE_NONE;
+    if (mcp3208_read_channel(j->adc, j->y_channel, &vy) != 0) return JSTATE_NONE;
     int dx = vx - j->center_x;
     int dy = vy - j->center_y;
-
     if (abs(dx) > abs(dy)) {
-        /* horizontal movement dominates */
         if (dx < -j->threshold) return JSTATE_LEFT;
         if (dx > j->threshold) return JSTATE_RIGHT;
     } else {
-        /* vertical movement dominates */
         if (dy < -j->threshold) return JSTATE_UP;
         if (dy > j->threshold) return JSTATE_DOWN;
     }
@@ -87,7 +75,6 @@ JOY_STATE joystick_get_state(Joystick *j)
 void joystick_cleanup(Joystick *j)
 {
     if (!j) return;
-    if (j->spi_fd >= 0) spi_close_device(j->spi_fd);
-    j->spi_fd = -1;
-    j->calibrated = 0;
+    /* We do not close the MCP3208 here — caller owns it */
+    free(j);
 }

@@ -2,6 +2,7 @@
 #define _SPI_H_
 
 #include <stdint.h>
+#include <stddef.h>
 
 /* Open spidev device. Returns fd or -1 on error. */
 int spi_open_device(const char *device, uint8_t mode, uint32_t speed_hz);

@@ -1,5 +1,5 @@
 #define _GNU_SOURCE
-#include "led.h"
+#include "hal/led.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -40,7 +40,7 @@ static void write_brightness(const char *brightness_path, int value)
     fclose(f);
 }
 
-void led_init(LEDHAL *h, const char *green_trigger_path, const char *green_brightness_path, const char *red_trigger_path, const char *red_brightness_path)
+void led_init(LED *h, const char *green_trigger_path, const char *green_brightness_path, const char *red_trigger_path, const char *red_brightness_path)
 {
     if (!h) return;
     h->green_trigger_path = green_trigger_path;
@@ -60,35 +60,35 @@ void led_init(LEDHAL *h, const char *green_trigger_path, const char *green_brigh
     }
 }
 
-void led_green_on(LEDHAL *h)
+void led_green_on(LED *h)
 {
     if (!h) return;
     write_brightness(h->green_brightness_path, 1);
     h->green_state = 1;
 }
 
-void led_green_off(LEDHAL *h)
+void led_green_off(LED *h)
 {
     if (!h) return;
     write_brightness(h->green_brightness_path, 0);
     h->green_state = 0;
 }
 
-void led_red_on(LEDHAL *h)
+void led_red_on(LED *h)
 {
     if (!h) return;
     write_brightness(h->red_brightness_path, 1);
     h->red_state = 1;
 }
 
-void led_red_off(LEDHAL *h)
+void led_red_off(LED *h)
 {
     if (!h) return;
     write_brightness(h->red_brightness_path, 0);
     h->red_state = 0;
 }
 
-void led_flash_color(LEDHAL *h, const char *color, int times, double total_duration_sec)
+void led_flash_color(LED *h, const char *color, int times, double total_duration_sec)
 {
     if (!h || times <= 0 || total_duration_sec <= 0.0) return;
     double cycle = total_duration_sec / (double)times;
@@ -115,7 +115,7 @@ void led_flash_color(LEDHAL *h, const char *color, int times, double total_durat
     }
 }
 
-void led_cleanup(LEDHAL *h)
+void led_cleanup(LED *h)
 {
     if (!h) return;
     write_brightness(h->green_brightness_path, 0);
