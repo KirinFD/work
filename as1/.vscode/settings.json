@@ -14,7 +14,8 @@
         "select.h": "c",
         "string.h": "c",
         "joystick.h": "c",
-        "assert.h": "c"
+        "assert.h": "c",
+        "mcp3208.h": "c"
     },
     "cmake.sourceDirectory": "/home/kirin/ensc351/work/as1/cmake_starter"
 }
