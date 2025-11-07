@@ -7,16 +7,18 @@ set(CMAKE_C_STANDARD 11)
 add_compile_options(-Wall -Werror -Wpedantic -Wextra)
 add_compile_options(-fdiagnostics-color)
 
-# Enable address sanitizer
-# (Comment this out to make your code faster)
-add_compile_options(-fsanitize=address)
-add_link_options(-fsanitize=address)
+# Enable address sanitizer only for native builds
+if (NOT CMAKE_CROSSCOMPILING)
+  # (Comment this out to make your code faster)
+  add_compile_options(-fsanitize=address)
+  add_link_options(-fsanitize=address)
+endif()
 
 # Enable PThread library for linking
 add_compile_options(-pthread)
 add_link_options(-pthread)
 
 # What folders to build
-add_subdirectory(hal)  
+add_subdirectory(hal)
 add_subdirectory(app)
 

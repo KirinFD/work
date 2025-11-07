@@ -23,6 +23,17 @@
 				"isDefault": true
 			},
 			"detail": "compiler: /usr/bin/aarch64-linux-gnu-gcc"
+		},
+		{
+			"type": "cmake",
+			"label": "CMake: build",
+			"command": "build",
+			"targets": [
+				"all"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"detail": "CMake template build task"
 		}
 	]
 }

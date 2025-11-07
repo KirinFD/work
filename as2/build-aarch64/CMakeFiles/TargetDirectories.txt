@@ -1,0 +1,8 @@
+/home/kirin/ensc351/work/as2/build-aarch64/CMakeFiles/edit_cache.dir
+/home/kirin/ensc351/work/as2/build-aarch64/CMakeFiles/rebuild_cache.dir
+/home/kirin/ensc351/work/as2/build-aarch64/hal/CMakeFiles/hal.dir
+/home/kirin/ensc351/work/as2/build-aarch64/hal/CMakeFiles/edit_cache.dir
+/home/kirin/ensc351/work/as2/build-aarch64/hal/CMakeFiles/rebuild_cache.dir
+/home/kirin/ensc351/work/as2/build-aarch64/app/CMakeFiles/as2.dir
+/home/kirin/ensc351/work/as2/build-aarch64/app/CMakeFiles/edit_cache.dir
+/home/kirin/ensc351/work/as2/build-aarch64/app/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,1 @@
+/usr/bin/aarch64-linux-gnu-gcc -O3 -DNDEBUG -pthread CMakeFiles/as2.dir/src/as2.c.o -o as2  -Wl,-rpath,/usr/local/lib ../hal/libhal.a /usr/local/lib/libgpiod.so 

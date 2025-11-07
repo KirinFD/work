@@ -1,1 +1,0 @@
-/usr/bin/cc -fsanitize=address -pthread CMakeFiles/as2.dir/src/as2.c.o -o as2  ../hal/libhal.a 
