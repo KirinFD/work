@@ -11,5 +11,5 @@ target_link_libraries(as2 LINK_PRIVATE hal)
 add_custom_command(TARGET as2 POST_BUILD 
   COMMAND "${CMAKE_COMMAND}" -E copy 
      "$<TARGET_FILE:as2>"
-     "~/cmpt433/public/myApps/as2" 
+     "~/ensc351/public/myApps/as2" 
   COMMENT "Copying ARM executable to public NFS directory")

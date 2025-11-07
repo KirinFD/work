@@ -1,0 +1,7 @@
+{
+    "cmake.sourceDirectory": "/home/kirin/ensc351/work/as2",
+    "files.associations": {
+        "pthread.h": "c",
+        "errno.h": "c"
+    }
+}
