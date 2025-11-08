@@ -1,9 +1,4 @@
-// light_sampler.c
-// Integrates sampler and dip analyzer modules.
-// Build: gcc -O2 -Wall -pthread -o light_sampler light_sampler.c sampler.c dips.c
-//
-// Uses per-sample smoothed averages from sampler for accurate dip hysteresis.
-// NOTE: Samples and averages are already in volts (ADC_read returns volts).
+#define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -18,6 +13,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <time.h>
 
 #include "sampler.h"
 #include "dips.h"
@@ -189,10 +185,6 @@ int main(int argc, char **argv) {
     pthread_t th_pwm, th_udp;
     if (pthread_create(&th_pwm, NULL, pwm_thread_fn, NULL) != 0) {
         perror("pthread_create(pwm)");
-        atomic_store(&shutdown_flag, true);
-    }
-    if (pthread_create(&th_udp, NULL, udp_thread_fn, &udp_port) != 0) {
-        perror("pthread_create(udp)");
         atomic_store(&shutdown_flag, true);
     }
 
