@@ -1,4 +1,4 @@
-#define _POSIX_C_SOURCE 200809L
+#define _POSIX_C_SOURCE 200809L  // Ensure nanosleep prototype is visible
 
 #include "hal/rotary_encoder.h"
 #include <stdio.h>
@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include <limits.h>
 #include <time.h>
-#include <gpiod.h>
+#include <gpiod.h> 
 
 static void pos_cb(int32_t position, int32_t delta, int64_t ts_ns, void *user) {
     (void)user;

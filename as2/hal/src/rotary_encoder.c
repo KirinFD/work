@@ -1,4 +1,3 @@
-#define _GNU_SOURCE
 #include "hal/rotary_encoder.h"
 
 #include <gpiod.h>
@@ -11,10 +10,6 @@
 #include <time.h>
 #include <stdatomic.h>
 #include <limits.h>
-
-#ifndef RE_ARRAY_SIZE
-#define RE_ARRAY_SIZE(x) ((int)(sizeof(x)/sizeof((x)[0])))
-#endif
 
 struct re_encoder {
     re_config cfg;

@@ -4,15 +4,16 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-typedef struct re_encoder re_encoder;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-typedef void (*re_position_cb)(int32_t position, int32_t delta, int64_t timestamp_ns, void *user);
-typedef void (*re_button_cb)(bool pressed, int64_t timestamp_ns, void *user);
+typedef struct re_encoder re_encoder;
 
 typedef void (*re_position_cb)(int32_t position, int32_t delta, int64_t timestamp_ns, void *user);
 
 typedef struct re_config {
-    const char *chip;     
+    const char *chip;   
     unsigned line_a;
     unsigned line_b;
 
@@ -21,10 +22,10 @@ typedef struct re_config {
 
     unsigned steps_per_detent;
 
-    int a_bias;           
+    int a_bias;               
     int b_bias;
 
-    const char *consumer;    
+    const char *consumer;   
 } re_config;
 
 int  re_create(const re_config *cfg, re_encoder **out);
@@ -33,4 +34,9 @@ int  re_start(re_encoder *enc);
 void re_stop(re_encoder *enc);
 void re_destroy(re_encoder *enc);
 int32_t re_get_position(re_encoder *enc);
+
+#ifdef __cplusplus
+}
 #endif
+
+#endif 
