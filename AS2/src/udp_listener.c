@@ -111,4 +111,3 @@ void UDP_cleanup(void) {
     pthread_join(udp_thread, NULL);
     close(udp_sock);
 }
-
