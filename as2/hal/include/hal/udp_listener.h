@@ -13,4 +13,3 @@ void UDP_cleanup(void);
 void* udpFunc(void* arg);
 
 #endif
-

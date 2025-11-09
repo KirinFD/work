@@ -1,0 +1,161 @@
+Reading symbols from /home/kirin/ensc351/public/noworkytarget...
+(gdb) run
+Starting program: /home/kirin/ensc351/public/noworkytarget 
+/bin/bash: line 1: /home/kirin/ensc351/public/noworkytarget: cannot execute binary file: Exec format error
+/bin/bash: line 1: /home/kirin/ensc351/public/noworkytarget: Success
+During startup program exited with code 126.
+(gdb) target remote 192.168.7.2
+192.168.7.2: No such file or directory.
+(gdb) target remote 192.168.7.2:2001
+Remote debugging using 192.168.7.2:2001
+Reading /lib/ld-linux-aarch64.so.1 from remote target...
+warning: File transfers from remote targets can be slow. Use "set sysroot" to access files locally instead.
+Reading /lib/ld-linux-aarch64.so.1 from remote target...
+Reading symbols from target:/lib/ld-linux-aarch64.so.1...
+Reading /usr/lib/debug/.build-id/2c/9ac3cfeda05db3895dbefeabe484b6851b341e.debug from remote target...
+Reading /lib/9ac3cfeda05db3895dbefeabe484b6851b341e.debug from remote target...
+Reading /lib/.debug/9ac3cfeda05db3895dbefeabe484b6851b341e.debug from remote target...
+Reading /usr/lib/debug//lib/9ac3cfeda05db3895dbefeabe484b6851b341e.debug from remote target...
+--Type <RET> for more, q to quit, c to continue without paging--c
+Reading /usr/lib/debug/lib//9ac3cfeda05db3895dbefeabe484b6851b341e.debug from remote target...
+Reading target:/usr/lib/debug/lib//9ac3cfeda05db3895dbefeabe484b6851b341e.debug from remote target...
+(No debugging symbols found in target:/lib/ld-linux-aarch64.so.1)
+Reading /usr/lib/debug/.build-id/f6/919c1916ccdb18672230f909770d7a191a5880.debug from remote target...
+0x0000fffff7fd8300 in ?? () from target:/lib/ld-linux-aarch64.so.1
+(gdb) run
+The "remote" target does not support "run".  Try "help target" or "continue".
+(gdb) continue
+Continuing.
+Reading /lib/aarch64-linux-gnu/libc.so.6 from remote target...
+Reading /usr/lib/debug/.build-id/b3/2c35038e644c70c27979cb0b90182f43f6794b.debug from remote target...
+Reading /lib/aarch64-linux-gnu/2c35038e644c70c27979cb0b90182f43f6794b.debug from remote target...
+Reading /lib/aarch64-linux-gnu/.debug/2c35038e644c70c27979cb0b90182f43f6794b.debug from remote target...
+Reading /usr/lib/debug//lib/aarch64-linux-gnu/2c35038e644c70c27979cb0b90182f43f6794b.debug from remote target...
+Reading /usr/lib/debug/lib/aarch64-linux-gnu//2c35038e644c70c27979cb0b90182f43f6794b.debug from remote target...
+Reading target:/usr/lib/debug/lib/aarch64-linux-gnu//2c35038e644c70c27979cb0b90182f43f6794b.debug from remote target...
+
+Program received signal SIGSEGV, Segmentation fault.
+0x0000aaaaaaaa0864 in swapContent (d1=0xaab2aaac16a8, d2=0xaab2aaac1708) at noworky.c:17
+17              double tmp = *d2;
+(gdb) break tradeArrays 
+Breakpoint 1 at 0xaaaaaaaa08a8: file noworky.c, line 28.
+(gdb) break 29
+Breakpoint 2 at 0xaaaaaaaa08b4: file noworky.c, line 29.
+(gdb) continue
+Continuing.
+
+Program terminated with signal SIGSEGV, Segmentation fault.
+The program no longer exists.
+(gdb) run
+Starting program: /home/kirin/ensc351/public/noworkytarget 
+/bin/bash: line 1: /home/kirin/ensc351/public/noworkytarget: cannot execute binary file: Exec format error
+/bin/bash: line 1: /home/kirin/ensc351/public/noworkytarget: Success
+During startup program exited with code 126.
+(gdb) target remote 192.168.7.2:2001
+192.168.7.2:2001: Connection timed out.
+(gdb) target remote 192.168.7.2:2001
+Remote debugging using 192.168.7.2:2001
+Reading /lib/ld-linux-aarch64.so.1 from remote target...
+Reading /lib/ld-linux-aarch64.so.1 from remote target...
+Reading symbols from target:/lib/ld-linux-aarch64.so.1...
+Reading /usr/lib/debug/.build-id/2c/9ac3cfeda05db3895dbefeabe484b6851b341e.debug from remote target...
+Reading /lib/9ac3cfeda05db3895dbefeabe484b6851b341e.debug from remote target...
+Reading /lib/.debug/9ac3cfeda05db3895dbefeabe484b6851b341e.debug from remote target...
+Reading /usr/lib/debug//lib/9ac3cfeda05db3895dbefeabe484b6851b341e.debug from remote target...
+--Type <RET> for more, q to quit, c to continue without paging--c
+Reading /usr/lib/debug/lib//9ac3cfeda05db3895dbefeabe484b6851b341e.debug from remote target...
+Reading target:/usr/lib/debug/lib//9ac3cfeda05db3895dbefeabe484b6851b341e.debug from remote target...
+(No debugging symbols found in target:/lib/ld-linux-aarch64.so.1)
+Reading /usr/lib/debug/.build-id/f6/919c1916ccdb18672230f909770d7a191a5880.debug from remote target...
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x0000fffff7fd8300 in ?? () from target:/lib/ld-linux-aarch64.so.1
+(gdb) break tradeArrays 
+Note: breakpoint 1 also set at pc 0xaaaaaaaa08a8.
+Breakpoint 3 at 0xaaaaaaaa08a8: file noworky.c, line 28.
+(gdb) break 29
+Note: breakpoint 2 also set at pc 0xaaaaaaaa08b4.
+Breakpoint 4 at 0xaaaaaaaa08b4: file noworky.c, line 29.
+(gdb) continue
+Continuing.
+Reading /lib/aarch64-linux-gnu/libc.so.6 from remote target...
+Reading /usr/lib/debug/.build-id/b3/2c35038e644c70c27979cb0b90182f43f6794b.debug from remote target...
+Reading /lib/aarch64-linux-gnu/2c35038e644c70c27979cb0b90182f43f6794b.debug from remote target...
+Reading /lib/aarch64-linux-gnu/.debug/2c35038e644c70c27979cb0b90182f43f6794b.debug from remote target...
+Reading /usr/lib/debug//lib/aarch64-linux-gnu/2c35038e644c70c27979cb0b90182f43f6794b.debug from remote target...
+Reading /usr/lib/debug/lib/aarch64-linux-gnu//2c35038e644c70c27979cb0b90182f43f6794b.debug from remote target...
+Reading target:/usr/lib/debug/lib/aarch64-linux-gnu//2c35038e644c70c27979cb0b90182f43f6794b.debug from remote target...
+
+Breakpoint 1, tradeArrays (array1=0xaaaaaaac16b0, array2=0xaaaaaaac1710, size=10) at noworky.c:28
+28              for (i = size-1; i >= 0; i--) {
+(gdb) continue
+Continuing.
+
+Breakpoint 2, tradeArrays (array1=0xaaaaaaac16b0, array2=0xaaaaaaac1710, size=10) at noworky.c:29
+29                      swapContent(array1+i, array2+i);
+(gdb) continue
+Continuing.
+
+Breakpoint 2, tradeArrays (array1=0xaaaaaaac16b0, array2=0xaaaaaaac1710, size=10) at noworky.c:29
+29                      swapContent(array1+i, array2+i);
+(gdb) continue
+Continuing.
+
+Breakpoint 2, tradeArrays (array1=0xaaaaaaac16b0, array2=0xaaaaaaac1710, size=10) at noworky.c:29
+29                      swapContent(array1+i, array2+i);
+(gdb) continue
+Continuing.
+
+Breakpoint 2, tradeArrays (array1=0xaaaaaaac16b0, array2=0xaaaaaaac1710, size=10) at noworky.c:29
+29                      swapContent(array1+i, array2+i);
+(gdb) continue
+Continuing.
+
+Breakpoint 2, tradeArrays (array1=0xaaaaaaac16b0, array2=0xaaaaaaac1710, size=10) at noworky.c:29
+29                      swapContent(array1+i, array2+i);
+(gdb) continue
+Continuing.
+
+Breakpoint 2, tradeArrays (array1=0xaaaaaaac16b0, array2=0xaaaaaaac1710, size=10) at noworky.c:29
+29                      swapContent(array1+i, array2+i);
+(gdb) print i
+$1 = 4
+(gdb) print i
+$2 = 4
+(gdb) continue
+Continuing.
+
+Breakpoint 2, tradeArrays (array1=0xaaaaaaac16b0, array2=0xaaaaaaac1710, size=10) at noworky.c:29
+29                      swapContent(array1+i, array2+i);
+(gdb) continue
+Continuing.
+
+Breakpoint 2, tradeArrays (array1=0xaaaaaaac16b0, array2=0xaaaaaaac1710, size=10) at noworky.c:29
+29                      swapContent(array1+i, array2+i);
+(gdb) continue
+Continuing.
+
+Breakpoint 2, tradeArrays (array1=0xaaaaaaac16b0, array2=0xaaaaaaac1710, size=10) at noworky.c:29
+29                      swapContent(array1+i, array2+i);
+(gdb) print i
+$3 = 1
+(gdb) continue
+Continuing.
+
+Breakpoint 2, tradeArrays (array1=0xaaaaaaac16b0, array2=0xaaaaaaac1710, size=10) at noworky.c:29
+29                      swapContent(array1+i, array2+i);
+(gdb) print i
+$4 = 0
+(gdb) continue
+Continuing.
+
+Breakpoint 2, tradeArrays (array1=0xaaaaaaac16b0, array2=0xaaaaaaac1710, size=10) at noworky.c:29
+29                      swapContent(array1+i, array2+i);
+(gdb) print i
+$5 = 4294967295
+(gdb) continue
+Continuing.
+
+Program received signal SIGSEGV, Segmentation fault.
+0x0000aaaaaaaa0864 in swapContent (d1=0xaab2aaac16a8, d2=0xaab2aaac1708) at noworky.c:17
+17              double tmp = *d2;
