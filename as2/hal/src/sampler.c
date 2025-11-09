@@ -1,5 +1,5 @@
-#include "sampler.h"
-#include "adc_hal.h"
+#include "hal/sampler.h"
+#include "hal/adc_hal.h"
 #include <pthread.h>
 #include <unistd.h>
 #include <stdlib.h>

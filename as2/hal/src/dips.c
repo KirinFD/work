@@ -1,4 +1,4 @@
-#include "dips.h"
+#include "hal/dips.h"
 
 int Dips_count(const double *samples, const double *avgs, int n, DipConfig cfg)
 {

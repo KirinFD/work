@@ -1,4 +1,4 @@
-#include "encoder.h"
+#include "hal/encoder.h"
 #include <gpiod.h>
 #include <pthread.h>
 #include <stdio.h>

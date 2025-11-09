@@ -1,5 +1,5 @@
-#include "adc_hal.h"
-#include "SPI.h"
+#include "hal/adc_hal.h"
+#include "hal/SPI.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <unistd.h>

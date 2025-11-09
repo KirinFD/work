@@ -3,12 +3,12 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#include "sampler.h"
-#include "pwm_hal.h"
-#include "udp_listener.h"
-#include "periodTimer.h"
-#include "reporter.h"
-#include "encoder.h"
+#include "hal/sampler.h"
+#include "hal/pwm_hal.h"
+#include "hal/udp_listener.h"
+#include "hal/periodTimer.h"
+#include "hal/reporter.h"
+#include "hal/encoder.h"
 
 volatile int keepRunning = 1;
 

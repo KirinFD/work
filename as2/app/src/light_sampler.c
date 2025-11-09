@@ -15,8 +15,8 @@
 #include <arpa/inet.h>
 #include <time.h>
 
-#include "sampler.h"
-#include "dips.h"
+#include "hal/sampler.h"
+#include "hal/dips.h"
 
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(x) (sizeof(x)/sizeof((x)[0]))
@@ -72,7 +72,7 @@ static uint64_t monotonic_seconds(void) {
 static void* pwm_thread_fn(void *arg) {
     (void)arg;
     uint64_t last_sec = 0;
-    while (!atomic_load(&shutdown_flag)) {
+    while (!atomic_load(&shutdown_flag) && !is_stop_requested()) {
         uint64_t s = monotonic_seconds();
         if (s != last_sec) {
             last_sec = s;
@@ -140,23 +140,21 @@ static void print_status_line(void) {
 static void handle_signal(int sig) {
     (void)sig;
     atomic_store(&shutdown_flag, true);
+    request_program_stop();
 }
 
 static void usage(const char *prog) {
     fprintf(stderr,
-        "Usage: %s [--udp-port <port>] [--trigger <V>] [--reset <V>]\n",
+        "Usage: %s [--trigger <V>] [--reset <V>]\n",
         prog);
 }
 
 int main(int argc, char **argv) {
-    int udp_port = DEFAULT_UDP_PORT;
     double trigger_v = DEFAULT_DIP_THRESHOLD_TRIGGER;
     double reset_v   = DEFAULT_DIP_THRESHOLD_RESET;
 
     for (int i = 1; i < argc; ++i) {
-        if (strcmp(argv[i], "--udp-port") == 0 && i+1 < argc) {
-            udp_port = atoi(argv[++i]);
-        } else if (strcmp(argv[i], "--trigger") == 0 && i+1 < argc) {
+        if (strcmp(argv[i], "--trigger") == 0 && i+1 < argc) {
             trigger_v = atof(argv[++i]);
         } else if (strcmp(argv[i], "--reset") == 0 && i+1 < argc) {
             reset_v = atof(argv[++i]);
@@ -181,15 +179,17 @@ int main(int argc, char **argv) {
     signal(SIGTERM, handle_signal);
 
     Sampler_init();
+    UDP_init(); // start UDP listener thread (port 12345)
 
-    pthread_t th_pwm, th_udp;
+    pthread_t th_pwm;
     if (pthread_create(&th_pwm, NULL, pwm_thread_fn, NULL) != 0) {
         perror("pthread_create(pwm)");
         atomic_store(&shutdown_flag, true);
+        request_program_stop();
     }
 
     uint64_t last_sec = monotonic_seconds();
-    while (!atomic_load(&shutdown_flag)) {
+    while (!atomic_load(&shutdown_flag) && !is_stop_requested()) {
         uint64_t now = monotonic_seconds();
         if (now != last_sec) {
             last_sec = now;
@@ -204,7 +204,7 @@ int main(int argc, char **argv) {
     print_status_line();
 
     pthread_join(th_pwm, NULL);
-    pthread_join(th_udp, NULL);
+    UDP_cleanup();   // stop UDP thread and close socket
     Sampler_cleanup();
     pthread_mutex_destroy(&stats_lock);
     printf("Exiting.\n");

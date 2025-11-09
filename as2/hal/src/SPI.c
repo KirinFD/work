@@ -1,4 +1,4 @@
-#include "SPI.h"
+#include "hal/SPI.h"
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>

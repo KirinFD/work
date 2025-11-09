@@ -1,4 +1,4 @@
-#include "pwm_hal.h"
+#include "hal/pwm_hal.h"
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>

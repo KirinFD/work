@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
-#include "sampler.h"
-#include "periodTimer.h"
-#include "reporter.h"
+#include "hal/sampler.h"
+#include "hal/periodTimer.h"
+#include "hal/reporter.h"
 
 static pthread_t reporterThread;
 static volatile int running = 0;
